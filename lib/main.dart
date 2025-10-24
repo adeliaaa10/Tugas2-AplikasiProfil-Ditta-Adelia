@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      title: 'Aplikasi Profil', // Judul tab browser
       debugShowCheckedModeBanner: false,
       home: ProfileScreen(),
     );
@@ -19,56 +20,82 @@ class MyApp extends StatelessWidget {
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  // Ukuran foto profil
   static const double profilePicRadius = 80; // Diameter 160px
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F0F0), // Background abu-abu muda
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Background diubah jadi putih
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // 1. BAGIAN HEADER BIRU 
+            // ## 1. BAGIAN HEADER BIRU
             _buildHeader(),
 
-            // 2. FOTO PROFIL
+            // ## 2. FOTO PROFIL
             Transform.translate(
               offset: const Offset(0, -profilePicRadius / 2),
               child: CircleAvatar(
                 radius: profilePicRadius,
                 backgroundColor: Colors.white,
-                child: const CircleAvatar( 
+                child: const CircleAvatar(
                   radius: profilePicRadius - 5,
                   backgroundImage: AssetImage('assets/images/foto.png'), // Ganti nama file jika perlu
                 ),
               ),
             ),
 
-            // 3. BAGIAN INFORMASI
+            // ## 3. BAGIAN INFO (NAMA & LOKASI)
             Transform.translate(
               offset: const Offset(0, -profilePicRadius / 2 + 10),
               child: _buildProfileInfo(),
             ),
 
-            // ## 4. TOMBOL LIHAT DETAIL PROFIL (DIUBAH)
-            const SizedBox(height: 20),
-            // Mengganti ElevatedButton menjadi OutlinedButton.icon
+            // ## 4. BAGIAN FORM FIELDS (TAMBAHAN)
+            // Beri jarak dari info profil
+            const SizedBox(height: 10), // Jarak dikurangi sedikit
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0), // Padding kiri-kanan
+              child: Column(
+                children: [
+                  _buildInfoField(label: "Nama Lengkap", value: "Ditta Adelia"),
+                  const SizedBox(height: 15),
+                  _buildInfoField(label: "Email", value: "ditta.adelia@gmail.com"),
+                  const SizedBox(height: 15),
+                  _buildInfoField(label: "Alamat", value: "Jawa Timur, Indonesia"),
+                  const SizedBox(height: 15),
+                  
+                ],
+              ),
+            ),
+
+
+            // ## 5. TOMBOL LIHAT DETAIL PROFIL
             OutlinedButton.icon(
               onPressed: () {
-                print('Tombol Detail Profil ditekan!');
+                print('Tombol Edit Profil ditekan!');
+                 // Menampilkan SnackBar (pop-up)
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Menampilkan Edit profil...'), // Pesan pop-up
+                    duration: Duration(seconds: 5), // Berapa lama tampil
+                    behavior: SnackBarBehavior.floating, // Posisi mengambang
+                    margin: EdgeInsets.all(20), // Jarak dari tepi layar
+                  ),
+                );
               },
-              icon: const Icon(Icons.info_outline, size: 20), // Ikon ditambahkan
+              icon: const Icon(Icons.info_outline, size: 20),
               label: const Text(
-                'Detail profil',
+                'Edit profil',
                 style: TextStyle(fontSize: 16),
               ),
               style: OutlinedButton.styleFrom(
-                // Warna teks dan border disamakan dengan warna biru header
                 foregroundColor: const Color(0xFF3B80FF),
-                side: const BorderSide(color: Color(0xFF3B80FF), width: 1.5), // Warna & tebal border
+                side: const BorderSide(color: Color(0xFF3B80FF), width: 1.5),
                 padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0), // Sudut melengkung
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
             ),
@@ -82,7 +109,7 @@ class ProfileScreen extends StatelessWidget {
   // --- WIDGET UNTUK HEADER BIRU ---
   Widget _buildHeader() {
     return Container(
-      height: 190,
+      height: 200, // Tinggi ditambah sedikit
       width: double.infinity,
       decoration: const BoxDecoration(
         color: Color(0xFF3B80FF), // Warna Biru
@@ -132,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 10),
 
-          // 2. SUBTITEL 
+          // 2. SUBTITEL
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -165,9 +192,45 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
           ),
-          // SizedBox di bawah sini tidak diperlukan
         ],
       ),
+    );
+  }
+
+  // --- WIDGET HELPER UNTUK MEMBUAT SATU FORM FIELD (BARU) ---
+  Widget _buildInfoField({
+    required String label,
+    required String value,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Label (identitas)
+        Text(
+          label,
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+        ),
+        const SizedBox(height: 5),
+
+        // Kotak yang berisi value
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+          decoration: BoxDecoration(
+            color: Colors.white, // Background kotak putih
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: Colors.grey.shade200), // Border abu-abu muda
+          ),
+          child: Text( // Hanya menampilkan teks value
+            value,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
