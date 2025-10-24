@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  // Ukuran foto profil
   static const double profilePicRadius = 80; // Diameter 160px
 
   @override
@@ -29,23 +28,23 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ## 1. BAGIAN HEADER BIRU (Dengan Tombol Kembali & Judul)
+            // 1. BAGIAN HEADER BIRU 
             _buildHeader(),
 
-            // ## 2. FOTO PROFIL
+            // 2. FOTO PROFIL
             Transform.translate(
               offset: const Offset(0, -profilePicRadius / 2),
               child: CircleAvatar(
                 radius: profilePicRadius,
                 backgroundColor: Colors.white,
-                child: const CircleAvatar( // Hapus const jika AssetImage error
+                child: const CircleAvatar( 
                   radius: profilePicRadius - 5,
                   backgroundImage: AssetImage('assets/images/foto.png'), // Ganti nama file jika perlu
                 ),
               ),
             ),
 
-            // ## 3. BAGIAN INFO (NAMA & LOKASI)
+            // 3. BAGIAN INFORMASI
             Transform.translate(
               offset: const Offset(0, -profilePicRadius / 2 + 10),
               child: _buildProfileInfo(),
@@ -133,7 +132,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 10),
 
-          // 2. SUBTITEL (Jabatan & Lokasi)
+          // 2. SUBTITEL 
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
